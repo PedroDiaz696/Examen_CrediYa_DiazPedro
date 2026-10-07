@@ -1,0 +1,6 @@
+# id|nombre|documento|correo|telefono
+1|Pedro Diaz|123456789|pedro@gmail.com|3001234567
+2|Carlos Pérez|2020202020|carlos.perez@gmail.com|3105551234
+3|Juan Rodríguez|1098765432|juan.rodriguez@gmail.com|3157778899
+4|Juan Dario|0987654321|juanD@gmail.com|314159265
+5|Carlos Alberto|123460764|BetoWI@gmail.com|3134567987

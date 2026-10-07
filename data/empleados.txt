@@ -1,0 +1,4 @@
+# id|nombre|documento|rol|correo|salario
+1|Ana Gómez|1010101010|ASESOR|ana.gomez@crediya.com|2500000.0
+2|Laura Martínez|52123456|ASESOR|laura.martinez@crediya.com|3200000.0
+3|Carlos Wilches|1234509876|ADMINISTRADOR|Willy@gmail.com|3000000.0
