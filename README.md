@@ -326,3 +326,12 @@ mvn compile org.codehaus.mojo:exec-maven-plugin:3.6.3:java
 **PEDRO ANTONIO DÍAZ V**
 
 Proyecto académico: Sistema de Cobros de Cartera "CrediYa".
+
+
+## EXAMEN
+En el examen, se agregaron las funciones de mostrar prestamos activos, vencidos y mostrar resumen, todo eso se implemento mediante la clase GestorPrestamos, tambien se implemento un menu funcional extra, cumpliendo asi con todos los requerimientos del programa
+
+# MUESTRAS DE FUNCIONAMIENTO
+
+![Reportes de morosos, estado y resumen de cartera](docs/capturas/14-gestionprestamos.png)
+![Reportes de morosos, estado y resumen de cartera](docs/capturas/15-gestionprestamos.png)

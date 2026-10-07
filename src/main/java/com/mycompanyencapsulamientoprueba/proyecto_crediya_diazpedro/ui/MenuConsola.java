@@ -11,6 +11,7 @@ import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.model.Prest
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.model.RolEmpleado;
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.ClienteService;
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.EmpleadoService;
+import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.GestorPrestamos;
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.PagoService;
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.PrestamoService;
 import com.mycompanyencapsulamientoprueba.proyecto_crediya_diazpedro.service.ReporteService;
@@ -29,6 +30,7 @@ public class MenuConsola {
     private final PrestamoService prestamoService;
     private final PagoService pagoService;
     private final ReporteService reporteService;
+    private final GestorPrestamos gestorPrestamos;
 
 
     public MenuConsola() {
@@ -38,6 +40,7 @@ public class MenuConsola {
         prestamoService = new PrestamoService(clienteService, empleadoService);
         pagoService = new PagoService(prestamoService);
         reporteService = new ReporteService(prestamoService, clienteService);
+        gestorPrestamos = new GestorPrestamos(prestamoService, clienteService);
     }
 
     public void iniciar() {
@@ -53,7 +56,8 @@ public class MenuConsola {
             System.out.println("3. Préstamos");
             System.out.println("4. Pagos");
             System.out.println("5. Reportes");
-            System.out.println("6. Salir");
+            System.out.println("6. Gestionar Prestamos");
+            System.out.println("7. Salir");
             System.out.print("Seleccione una opción: ");
 
             opcion = leerEntero();
@@ -80,6 +84,10 @@ public class MenuConsola {
                     break;
 
                 case 6:
+                    menuGestionar();
+                    break;
+                
+                case 7:
                     System.out.println("Saliendo del sistema...");
                     break;
 
@@ -87,7 +95,7 @@ public class MenuConsola {
                     System.out.println("Opción inválida.");
             }
 
-        } while (opcion != 6);
+        } while (opcion != 7);
     }
 
     private void menuClientes() {
@@ -579,6 +587,46 @@ public class MenuConsola {
 
         } while (opcion != 6);
     }
+    
+    
+    private void menuGestionar() {
+
+        int opcion;
+
+        do {
+            System.out.println("\n===== GESTION =====");
+            System.out.println("1. Préstamos activos");
+            System.out.println("2. Préstamos vencidos");
+            System.out.println("3. Mostrar resumen");
+            System.out.println("4. Volver");
+            System.out.print("Seleccione una opción: ");
+
+            opcion = leerEntero();
+
+            switch (opcion) {
+                case 1:
+                    ejecutar(() -> mostrarReportePrestamos(
+                            "PRÉSTAMOS ACTIVOS", gestorPrestamos.FiltrarPrestamosActivos()));
+                    break;
+
+                case 2:
+                    ejecutar(() -> mostrarReportePrestamos(
+                            "PRÉSTAMOS VENCIDOS", gestorPrestamos.FiltrarPrestamosVencidos()));
+                    break;
+                    
+                case 3:
+                    ejecutar(this::MostrarResumen);
+                    break;
+
+                case 4:
+                    break;
+
+                default:
+                    System.out.println("Opción inválida.");
+            }
+
+        } while (opcion != 4);
+    }
 
     private void mostrarReportePrestamos(String titulo, List<Prestamo> prestamos) {
 
@@ -636,6 +684,20 @@ public class MenuConsola {
         }
 
         reporteService.resumenCartera()
+                .forEach((concepto, valor) -> System.out.println(concepto + ": " + formatoMoneda(valor)));
+    }
+    
+    private void MostrarResumen() {
+
+        System.out.println("\n===== RESUMEN =====");
+
+        Map<EstadoPrestamo, Long> cantidadPorEstado = gestorPrestamos.contarPorEstado();
+
+        for (EstadoPrestamo estado : EstadoPrestamo.values()) {
+            System.out.println("Préstamos " + estado + ": " + cantidadPorEstado.getOrDefault(estado, 0L));
+        }
+
+        gestorPrestamos.resumenCartera()
                 .forEach((concepto, valor) -> System.out.println(concepto + ": " + formatoMoneda(valor)));
     }
 
